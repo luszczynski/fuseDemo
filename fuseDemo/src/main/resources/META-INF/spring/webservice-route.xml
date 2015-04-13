@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:cxf="http://camel.apache.org/schema/cxf"
+        xmlns:amq="http://activemq.apache.org/schema/core"
+        xsi:schemaLocation="
+        http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+<routeContext id="webservice-route" xmlns="http://camel.apache.org/schema/spring">
+  <route id="webservice-route">
+    <from uri="jetty:http://fuse:8282/proxyservice?matchOnUriPrefix=true&amp;continuationTimeout=320000"/>
+    <convertBodyTo type="String"/>
+    <log message="Mensagem size ${body.length} Mensagem body: ${body}"/>
+    <wireTap uri="direct:audit" copy="true">
+      <body>
+        <simple>${body}</simple>
+      </body>
+    </wireTap>
+    <log message="Depois do wiretap: ${body}"/>
+    <choice>
+      <when>
+        <simple>${header[Content-Type]} contains "application/json"</simple>
+        <log message="Rest endpoint!"/>
+        <to uri="direct:rest"/>
+      </when>
+      <when>
+        <simple>${header[Content-Type]} contains "text/xml" || ${header[CamelHttpQuery]} == "wsdl"</simple>
+        <setHeader headerName="messageId">
+          <xpath>//id/text()</xpath>
+        </setHeader>
+        <idempotentConsumer messageIdRepositoryRef="messageIdRepository">
+          <header>messageId</header>
+          <log message="Endpoint SOAP"/>
+          <choice>
+            <when>
+              <simple>${body.length} &gt; 1000</simple>
+              <split>
+                <xpath>//*[local-name()='order']</xpath>
+                <log message="Mensagem: ${body}"/>
+                <to uri="amq:batchsoap"/>
+              </split>
+            </when>
+            <otherwise>
+              <to uri="direct:soap"/>
+            </otherwise>
+          </choice>
+        </idempotentConsumer>
+      </when>
+      <otherwise>
+        <log message="Outro resultado: ${body}"/>
+      </otherwise>
+    </choice>
+  </route>
+</routeContext>
+
+</beans>

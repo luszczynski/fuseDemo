@@ -1,0 +1,11 @@
+### SOAP ###
+http://172.17.0.3:8080/ws-server/OrderService
+http://fuse:8282/proxyservice
+
+### REST ###
+http://172.17.0.3:8080/ws-server/rest/order
+
+[
+    {"id":"1", "year":"2015", "email":"a@a.com"},
+    {"id":"1", "year":"2015", "email":"a@a.com"}
+]

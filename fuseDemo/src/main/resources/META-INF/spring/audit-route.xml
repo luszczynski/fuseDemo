@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <routeContext id="audit-route" xmlns="http://camel.apache.org/schema/spring">
+  <route id="audit-route">
+    <from uri="direct:audit"/>
+    <log message="Body no audit: ${body}"/>
+    <setHeader headerName="theMessage">
+      <simple>${in.body}</simple>
+    </setHeader>
+    <throttle timePeriodMillis="15000">
+      <constant>1</constant>
+      <to uri="sql:{{sql.insertAuditoria}}?dataSource=AuditoriaDataSource"/>
+    </throttle>
+  </route>
+</routeContext>
+
+</beans>

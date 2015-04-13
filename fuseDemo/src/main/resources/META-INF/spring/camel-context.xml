@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<import resource="camel-context-config.xml" />
+
+	<import resource="criaTabelaAuditoria.xml" /> 
+	<import resource="audit-route.xml" />
+	<import resource="rest-balancer-route.xml" />
+	<import resource="soap-balancer-route.xml" />
+	<import resource="webservice-route.xml" />
+	<import resource="monitora-audit-route.xml" />
+
+	<camelContext trace="false" streamCache="false" xmlns="http://camel.apache.org/schema/spring">
+  <propertyPlaceholder location="classpath:config.properties" id="placeholder"/>
+  <routeContextRef ref="criaTabelaAuditoria"/>
+  <routeContextRef ref="audit-route"/>
+  <routeContextRef ref="rest-balancer-route"/>
+  <routeContextRef ref="soap-balancer-route"/>
+  <routeContextRef ref="webservice-route"/>
+  <routeContextRef ref="monitora-audit-route"/>
+</camelContext>
+
+</beans>

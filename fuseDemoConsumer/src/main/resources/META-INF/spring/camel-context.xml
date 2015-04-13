@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+<cxf:cxfEndpoint id="soapEndpoint1" address="http://{{server1}}:8080/ws-server/OrderService" wsdlURL="http://{{server1}}:8080/ws-server/OrderService?wsdl"/>
+<cxf:cxfEndpoint id="soapEndpoint2" address="http://{{server2}}:8080/ws-server/OrderService" wsdlURL="http://{{server2}}:8080/ws-server/OrderService?wsdl"/>
+
+<camelContext xmlns="http://camel.apache.org/schema/spring">
+  <propertyPlaceholder location="classpath:config.properties" id="placeholder"/>
+  <route>
+    <from uri="amq:batchsoap"/>
+    <log message="Batch: ${body}"/>
+    <to uri="freemarker:SOAPRequestTemplate.ftl"/>
+    <loadBalance>
+      <roundRobin/>
+      <to uri="cxf:bean:soapEndpoint1?dataFormat=MESSAGE"/>
+      <to uri="cxf:bean:soapEndpoint2?dataFormat=MESSAGE"/>
+    </loadBalance>
+  </route>
+</camelContext>
+
+</beans>
