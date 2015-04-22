@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="customer_soap" resourceRoot="" soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="OrderServiceServiceSoapBinding" type="wsdl" bindingName="{http://customer.gov.br/}OrderServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://172.17.0.4:8080/ws-server/OrderService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://172.17.0.4:8080/ws-server/OrderService?wsdl"><con:part><con:url>http://172.17.0.4:8080/ws-server/OrderService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="OrderServiceService" targetNamespace="http://customer.gov.br/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://customer.gov.br/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://customer.gov.br/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="geraSLR" type="tns:geraSLR"/>
+      <xs:element name="geraSLRResponse" type="tns:geraSLRResponse"/>
+      <xs:element name="order" type="tns:order"/>
+      <xs:complexType name="geraSLR">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="tns:order"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="order">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="email" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+          <xs:element minOccurs="0" name="year" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="geraSLRResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="geraSLR">
+    <wsdl:part element="tns:geraSLR" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="geraSLRResponse">
+    <wsdl:part element="tns:geraSLRResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="OrderService">
+    <wsdl:operation name="geraSLR">
+      <wsdl:input message="tns:geraSLR" name="geraSLR"></wsdl:input>
+      <wsdl:output message="tns:geraSLRResponse" name="geraSLRResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OrderServiceServiceSoapBinding" type="tns:OrderService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="geraSLR">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="geraSLR">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="geraSLRResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OrderServiceService">
+    <wsdl:port binding="tns:OrderServiceServiceSoapBinding" name="OrderServicePort">
+      <soap:address location="http://ws-server:8080/ws-server/OrderService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://ws-server:8080/ws-server/OrderService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="geraSLR" bindingOperationName="geraSLR" type="Request-Response" outputName="geraSLRResponse" inputName="geraSLR" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://fuse:8282/proxyservice</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://customer.gov.br/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:geraOrder>
+         <cus:order>
+            <email>gustavo.duarte@redhat.com</email>
+            <id>2</id>
+            <year>2015</year>
+         </cus:order>
+         <cus:order>
+            <email>gustavo.duarte@redhat.com</email>
+            <id>3</id>
+            <year>2015</year>
+         </cus:order>
+         <cus:order>
+            <email>gustavo.duarte@redhat.com</email>
+            <id>1</id>
+            <year>2015</year>
+         </cus:order>
+         <cus:order>
+            <email>gustavo.duarte@redhat.com</email>
+            <id>1</id>
+            <year>2015</year>
+         </cus:order>
+         <cus:order>
+            <email>gustavo.duarte@redhat.com</email>
+            <id>1</id>
+            <year>2015</year>
+         </cus:order>
+         <cus:order>
+            <email>gustavo.duarte@redhat.com</email>
+            <id>1</id>
+            <year>2015</year>
+         </cus:order>
+      </cus:geraOrder>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://customer.gov.br/OrderService/geraSLR"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
