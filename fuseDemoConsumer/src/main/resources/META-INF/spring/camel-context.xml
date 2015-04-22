@@ -17,7 +17,7 @@
 
 <camelContext xmlns="http://camel.apache.org/schema/spring">
   <propertyPlaceholder location="classpath:config.properties" id="placeholder"/>
-  <route>
+  <route id="consumer-route">
     <from uri="amq:batchsoap"/>
     <log message="Batch: ${body}"/>
     <to uri="freemarker:SOAPRequestTemplate.ftl"/>

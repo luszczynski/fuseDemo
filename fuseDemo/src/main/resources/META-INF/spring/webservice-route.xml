@@ -41,7 +41,7 @@
               <split>
                 <xpath>//*[local-name()='order']</xpath>
                 <log message="Mensagem: ${body}"/>
-                <to uri="amq:batchsoap"/>
+                <to uri="amq:batchsoap?disableReplyTo=true"/>
               </split>
             </when>
             <otherwise>
