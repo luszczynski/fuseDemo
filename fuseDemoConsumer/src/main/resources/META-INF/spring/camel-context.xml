@@ -15,7 +15,8 @@
 <cxf:cxfEndpoint id="soapEndpoint1" address="http://{{server1}}:8080/ws-server/OrderService" wsdlURL="http://{{server1}}:8080/ws-server/OrderService?wsdl"/>
 <cxf:cxfEndpoint id="soapEndpoint2" address="http://{{server2}}:8080/ws-server/OrderService" wsdlURL="http://{{server2}}:8080/ws-server/OrderService?wsdl"/>
 
-<camelContext xmlns="http://camel.apache.org/schema/spring">
+<camelContext errorHandlerRef="myDeadLetterErrorHandler" xmlns="http://camel.apache.org/schema/spring">
+
   <propertyPlaceholder location="classpath:config.properties" id="placeholder"/>
   <route id="consumer-route">
     <from uri="amq:batchsoap"/>
@@ -27,6 +28,18 @@
       <to uri="cxf:bean:soapEndpoint2?dataFormat=MESSAGE"/>
     </loadBalance>
   </route>
+  
 </camelContext>
+
+<bean id="myDeadLetterErrorHandler" class="org.apache.camel.builder.DeadLetterChannelBuilder">
+	<property name="deadLetterUri" value="amq:dead"/>
+	<property name="redeliveryPolicy" ref="myRedeliveryPolicyConfig" />
+</bean>
+
+<bean id="myRedeliveryPolicyConfig" class="org.apache.camel.processor.RedeliveryPolicy">
+	<property name="maximumRedeliveries" value="1" />
+	<property name="redeliveryDelay" value="5000" />
+</bean>
+
 
 </beans>
