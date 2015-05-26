@@ -1,0 +1,35 @@
+-- MySQL
+-- 
+CREATE DATABASE POC_customer;
+USE POC_customer;
+
+CREATE TABLE PESSOA_MYSQL(
+ID INT,
+NOME VARCHAR(50),
+SOBRENOME VARCHAR(50)
+);
+
+INSERT INTO PESSOA_MYSQL (ID, NOME, SOBRENOME) VALUES (0, 'Gustavo', 'Luszczynski');
+
+
+CREATE TABLE PESSOA_COMPLETA(
+ID VARCHAR(3),
+NOME VARCHAR(50),
+SOBRENOME VARCHAR(50),
+IDADE VARCHAR(3)
+);
+
+
+
+
+-- Postgres
+--
+CREATE DATABASE poc_customer;
+
+CREATE TABLE pessoa_postgres(
+id INT,
+nome VARCHAR(50),
+idade INT
+);
+
+INSERT INTO pessoa_postgres (id, nome, idade) VALUES (0, 'Gustavo', 25);
